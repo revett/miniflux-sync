@@ -23,7 +23,7 @@ func main() {
 
 	app := &cli.App{
 		Name:     "miniflux-sync",
-		Usage:    "Manage and sync your Miniflux feeds with YAML or OPML.",
+		Usage:    "Manage and sync your Miniflux feeds with YAML.",
 		Version:  cfg.Version,
 		Flags:    cfg.Flags(),
 		Commands: cmd.Commands(cfg),

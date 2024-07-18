@@ -1,3 +1,3 @@
 # miniflux-sync
 
-Manage and sync your Miniflux feeds with YAML or OPML.
+Manage and sync your Miniflux feeds with YAML.

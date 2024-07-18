@@ -33,7 +33,7 @@ func (s *SyncFlags) Flags() []cli.Flag {
 			Aliases:     []string{"p"},
 			Required:    true,
 			Action: func(ctx *cli.Context, s string) error {
-				allowedExts := []string{".yaml", ".yml", ".opml"}
+				allowedExts := []string{".yaml", ".yml"}
 				ext := filepath.Ext(s)
 
 				for _, allowedExt := range allowedExts {

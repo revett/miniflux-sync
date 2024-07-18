@@ -15,7 +15,7 @@ func Commands(cfg *config.GlobalFlags) []*cli.Command {
 		{
 			Name:    "sync",
 			Aliases: []string{"s"},
-			Usage:   "Update Miniflux using a local YAML or OPML file.",
+			Usage:   "Update Miniflux using a local YAML file.",
 			Flags:   syncFlags.Flags(),
 			Action: func(ctx *cli.Context) error {
 				if err := sync(cfg, syncFlags); err != nil {
