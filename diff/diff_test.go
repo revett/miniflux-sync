@@ -7,7 +7,7 @@ import (
 	"github.com/stretchr/testify/require"
 )
 
-func TestCalculateDiff(t *testing.T) {
+func TestCalculateDiff(t *testing.T) { //nolint:funlen
 	t.Parallel()
 
 	tests := map[string]struct {
@@ -20,16 +20,10 @@ func TestCalculateDiff(t *testing.T) {
 				"Tech": {
 					"https://tech.com/feed",
 				},
-				"Music": {
-					"https://music.com/feed",
-				},
 			},
 			remote: map[string][]string{
 				"Tech": {
 					"https://tech.com/feed",
-				},
-				"Music": {
-					"https://music.com/feed",
 				},
 			},
 			expected: []diff.Action{},
@@ -37,23 +31,21 @@ func TestCalculateDiff(t *testing.T) {
 
 		"CreateFeed": {
 			local: map[string][]string{
-				"Tech": {
+				"General": {
 					"https://tech.com/feed",
-				},
-				"Music": {
 					"https://music.com/feed",
 				},
 			},
 			remote: map[string][]string{
-				"Music": {
-					"https://music.com/feed",
+				"General": {
+					"https://tech.com/feed",
 				},
 			},
 			expected: []diff.Action{
 				{
 					Type:          diff.CreateFeed,
-					FeedURL:       "https://tech.com/feed",
-					CategoryTitle: "Tech",
+					FeedURL:       "https://music.com/feed",
+					CategoryTitle: "General",
 				},
 			},
 		},
@@ -76,6 +68,10 @@ func TestCalculateDiff(t *testing.T) {
 					CategoryTitle: "General",
 				},
 				{
+					Type:          diff.CreateCategory,
+					CategoryTitle: "Tech",
+				},
+				{
 					Type:          diff.CreateFeed,
 					FeedURL:       "https://tech.com/feed",
 					CategoryTitle: "Tech",
@@ -95,6 +91,33 @@ func TestCalculateDiff(t *testing.T) {
 					Type:          diff.DeleteFeed,
 					FeedURL:       "https://tech.com/feed",
 					CategoryTitle: "Tech",
+				},
+			},
+		},
+
+		"CreateCategoryAndFeed": {
+			local: map[string][]string{
+				"Music": {
+					"https://music.com/feed",
+				},
+				"Tech": {
+					"https://tech.com/feed",
+				},
+			},
+			remote: map[string][]string{
+				"Tech": {
+					"https://tech.com/feed",
+				},
+			},
+			expected: []diff.Action{
+				{
+					Type:          diff.CreateCategory,
+					CategoryTitle: "Music",
+				},
+				{
+					Type:          diff.CreateFeed,
+					FeedURL:       "https://music.com/feed",
+					CategoryTitle: "Music",
 				},
 			},
 		},

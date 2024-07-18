@@ -19,6 +19,16 @@ func CalculateDiff(local *State, remote *State) ([]Action, error) {
 		}
 	}
 
+	// Iterate over local categories and check if they exist in the remote categories.
+	for categoryTitle := range local.FeedURLsByCategoryTitle {
+		if !remote.CategoryExists(categoryTitle) {
+			actions = append(actions, Action{
+				Type:          CreateCategory,
+				CategoryTitle: categoryTitle,
+			})
+		}
+	}
+
 	// Iterate over local feeds and check if they exist in the remote feeds.
 	for categoryTitle, feedURLs := range local.FeedURLsByCategoryTitle {
 		for _, feedURL := range feedURLs {

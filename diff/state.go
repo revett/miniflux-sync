@@ -6,6 +6,12 @@ type State struct {
 	FeedURLsByCategoryTitle map[string][]string
 }
 
+// CategoryExists checks if a category exists in the state.
+func (s State) CategoryExists(categoryTitle string) bool {
+	_, exists := s.FeedURLsByCategoryTitle[categoryTitle]
+	return exists
+}
+
 // CategoryTitles returns a list of all category titles in the state.
 func (s State) CategoryTitles() []string {
 	categorySet := map[string]struct{}{}
