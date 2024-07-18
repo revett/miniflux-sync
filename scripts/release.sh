@@ -22,5 +22,5 @@ echo "tag $VERSION created and pushed successfully"
 
 # Run goreleaser release.
 echo "running goreleaser"
-goreleaser release
+goreleaser release --clean
 echo "goreleaser release completed successfully"
