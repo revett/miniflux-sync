@@ -7,11 +7,11 @@ const (
 	// CreateCategory represents an action to create a category.
 	CreateCategory ActionType = "CreateCategory"
 
-	// DeleteCategory represents an action to delete a category.
-	DeleteCategory ActionType = "DeleteCategory"
-
 	// CreateFeed represents an action to create a feed.
 	CreateFeed ActionType = "CreateFeed"
+
+	// DeleteCategory represents an action to delete a category.
+	DeleteCategory ActionType = "DeleteCategory"
 
 	// DeleteFeed represents an action to delete a feed.
 	DeleteFeed ActionType = "DeleteFeed"
