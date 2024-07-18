@@ -1,5 +1,10 @@
 # miniflux-sync
 
+![GitHub Release](https://img.shields.io/github/v/release/revett/miniflux-sync?label=Release)
+![GitHub branch check runs](https://img.shields.io/github/check-runs/revett/miniflux-sync/main?label=Checks)
+![GitHub go.mod Go version](https://img.shields.io/github/go-mod/go-version/revett/miniflux-sync)
+![GitHub License](https://img.shields.io/github/license/revett/miniflux-sync?label=License)
+
 Manage and sync your [Miniflux](https://github.com/miniflux/v2) feeds with YAML.
 
 ![YAML config](./.resources/config.png)
@@ -7,8 +12,8 @@ Manage and sync your [Miniflux](https://github.com/miniflux/v2) feeds with YAML.
 
 ## Install
 
-> [!IMPORTANT]
-> This project is yet to make a release.
+- Download the [latest release](https://github.com/revett/miniflux-sync/releases)
+- For macOS, follow these [steps](https://support.apple.com/en-il/guide/mac-help/mchleab3a043/mac)
 
 ## Usage
 
