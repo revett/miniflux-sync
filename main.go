@@ -17,7 +17,6 @@ import (
 // TODO: Add README.
 // TODO: Add Dependabot.
 // TODO: Define release process.
-// TODO: Add no colour flag.
 
 //go:embed VERSION
 var version string
