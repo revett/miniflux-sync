@@ -7,6 +7,8 @@ import (
 	"github.com/stretchr/testify/require"
 )
 
+// TODO: Add test case for renaming a category with feeds in it.
+
 func TestCalculateDiff(t *testing.T) { //nolint:funlen
 	t.Parallel()
 

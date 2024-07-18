@@ -1,6 +1,8 @@
 package config
 
 import (
+	"context"
+
 	"github.com/revett/miniflux-sync/kitchensink"
 	"github.com/urfave/cli/v2"
 )
@@ -12,7 +14,7 @@ type SyncFlags struct {
 }
 
 // Flags returns the flags for the sync command.
-func (s *SyncFlags) Flags() []cli.Flag {
+func (s *SyncFlags) Flags(ctx context.Context) []cli.Flag {
 	return []cli.Flag{
 		&cli.BoolFlag{
 			Name:        "dry-run",
@@ -29,8 +31,8 @@ func (s *SyncFlags) Flags() []cli.Flag {
 			Destination: &s.Path,
 			Aliases:     []string{"p"},
 			Required:    true,
-			Action: func(ctx *cli.Context, s string) error {
-				return kitchensink.ValidateFileExtension(s, []string{".yaml", ".yml"})
+			Action: func(_ *cli.Context, s string) error {
+				return kitchensink.ValidateFileExtension(ctx, s, []string{".yaml", ".yml"})
 			},
 		},
 	}

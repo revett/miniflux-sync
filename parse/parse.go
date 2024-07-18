@@ -1,18 +1,19 @@
 package parse
 
 import (
-	"log"
+	"context"
 	"os"
 
 	"github.com/pkg/errors"
 	"github.com/revett/miniflux-sync/diff"
+	"github.com/revett/miniflux-sync/log"
 	"gopkg.in/yaml.v2"
 )
 
 // Parse reads a YAML file to a diff.State struct.
-func Parse(path string) (*diff.State, error) {
-	log.Println("reading data from yaml file")
-	log.Println(path)
+func Parse(ctx context.Context, path string) (*diff.State, error) {
+	log.Info(ctx, "reading data from yaml file")
+	log.Info(ctx, path)
 
 	data, err := os.ReadFile(path) //nolint:gosec
 	if err != nil {

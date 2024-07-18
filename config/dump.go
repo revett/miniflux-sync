@@ -1,6 +1,8 @@
 package config
 
 import (
+	"context"
+
 	"github.com/revett/miniflux-sync/kitchensink"
 	"github.com/urfave/cli/v2"
 )
@@ -11,7 +13,7 @@ type DumpFlags struct {
 }
 
 // Flags returns the flags for the dump command.
-func (d *DumpFlags) Flags() []cli.Flag {
+func (d *DumpFlags) Flags(ctx context.Context) []cli.Flag {
 	return []cli.Flag{
 		&cli.StringFlag{
 			Name:        "path",
@@ -19,8 +21,8 @@ func (d *DumpFlags) Flags() []cli.Flag {
 			EnvVars:     []string{"MINIFLUX_SYNC_PATH"},
 			Destination: &d.Path,
 			Aliases:     []string{"p"},
-			Action: func(ctx *cli.Context, s string) error {
-				return kitchensink.ValidateFileExtension(s, []string{".xml"})
+			Action: func(_ *cli.Context, s string) error {
+				return kitchensink.ValidateFileExtension(ctx, s, []string{".xml"})
 			},
 		},
 	}

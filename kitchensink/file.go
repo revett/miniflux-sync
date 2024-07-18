@@ -1,13 +1,15 @@
 package kitchensink
 
 import (
+	"context"
 	"errors"
-	"log"
 	"path/filepath"
+
+	"github.com/revett/miniflux-sync/log"
 )
 
 // ValidateFileExtension checks if the file extension is in the list of allowed extensions.
-func ValidateFileExtension(s string, allowedExts []string) error {
+func ValidateFileExtension(ctx context.Context, s string, allowedExts []string) error {
 	ext := filepath.Ext(s)
 
 	for _, allowedExt := range allowedExts {
@@ -16,8 +18,12 @@ func ValidateFileExtension(s string, allowedExts []string) error {
 		}
 	}
 
-	log.Printf(`invalid file extension: "%s"`, ext)
-	log.Printf("allowed extensions: %v", allowedExts)
+	log.Info(ctx, "invalid file extension", log.Metadata{
+		"extension": ext,
+	})
+	log.Info(ctx, "allowed extensions", log.Metadata{
+		"extensions": allowedExts,
+	})
 
 	return errors.New("invalid file extension")
 }

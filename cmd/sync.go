@@ -1,24 +1,28 @@
 package cmd
 
 import (
-	"log"
+	"context"
 	"path/filepath"
+	"strings"
 
 	"github.com/pkg/errors"
 	"github.com/revett/miniflux-sync/api"
 	"github.com/revett/miniflux-sync/config"
 	"github.com/revett/miniflux-sync/diff"
+	"github.com/revett/miniflux-sync/log"
 	"github.com/revett/miniflux-sync/parse"
 	miniflux "miniflux.app/v2/client"
 )
 
-func sync(flags *config.SyncFlags, client *miniflux.Client) error { //nolint:cyclop
+func sync( //nolint:cyclop,funlen
+	ctx context.Context, flags *config.SyncFlags, client *miniflux.Client,
+) error {
 	var localState *diff.State
 	var err error
 
 	switch filepath.Ext(flags.Path) {
 	case ".yaml", ".yml":
-		localState, err = parse.Parse(flags.Path)
+		localState, err = parse.Parse(ctx, flags.Path)
 		if err != nil {
 			return errors.Wrap(err, "loading data from yaml file")
 		}
@@ -27,10 +31,14 @@ func sync(flags *config.SyncFlags, client *miniflux.Client) error { //nolint:cyc
 		return errors.New("invalid file extension") // Should never happen, as we validate flag before.
 	}
 
-	log.Printf("local feeds: %d", len((localState.FeedURLs())))
-	log.Printf("local categories: %d", len(localState.CategoryTitles()))
+	log.Info(ctx, "local feeds", log.Metadata{
+		"count": len(localState.FeedURLs()),
+	})
+	log.Info(ctx, "local categories", log.Metadata{
+		"count": len(localState.CategoryTitles()),
+	})
 
-	feeds, categories, err := api.FetchData(client)
+	feeds, categories, err := api.FetchData(ctx, client)
 	if err != nil {
 		return errors.Wrap(err, "fetching data")
 	}
@@ -40,8 +48,12 @@ func sync(flags *config.SyncFlags, client *miniflux.Client) error { //nolint:cyc
 		return errors.Wrap(err, "generating remote state")
 	}
 
-	log.Printf("remote feeds: %d", len(remoteState.FeedURLs()))
-	log.Printf("remote categories: %d", len(remoteState.CategoryTitles()))
+	log.Info(ctx, "remote feeds", log.Metadata{
+		"count": len(remoteState.FeedURLs()),
+	})
+	log.Info(ctx, "remote categories", log.Metadata{
+		"count": len(remoteState.CategoryTitles()),
+	})
 
 	actions, err := diff.CalculateDiff(localState, remoteState)
 	if err != nil {
@@ -49,21 +61,27 @@ func sync(flags *config.SyncFlags, client *miniflux.Client) error { //nolint:cyc
 	}
 
 	if len(actions) == 0 {
-		log.Printf("no actions to perform")
+		log.Info(ctx, "no actions to perform")
 		return nil
 	}
 
-	log.Printf("%d actions to perform:", len(actions))
+	log.Info(ctx, "actions to perform", log.Metadata{
+		"count": len(actions),
+	})
+
 	for _, action := range actions {
-		log.Printf(`%s: "%s / %s"`, action.Type, action.CategoryTitle, action.FeedURL)
+		log.Info(ctx, strings.ToLower(string(action.Type)), log.Metadata{
+			"category_title": action.CategoryTitle,
+			"feed_url":       action.FeedURL,
+		})
 	}
 
 	if flags.DryRun {
-		log.Println("dry run complete")
+		log.Info(ctx, "dry run complete")
 		return nil
 	}
 
-	if err := api.Update(client, actions, feeds, categories); err != nil {
+	if err := api.Update(ctx, client, actions, feeds, categories); err != nil {
 		return errors.Wrap(err, "performing actions")
 	}
 

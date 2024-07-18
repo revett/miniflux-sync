@@ -1,32 +1,41 @@
 package api
 
 import (
-	"log"
+	"context"
 
 	"github.com/pkg/errors"
 	"github.com/revett/miniflux-sync/diff"
+	"github.com/revett/miniflux-sync/log"
 	miniflux "miniflux.app/v2/client"
 )
 
 // Update performs a series of actions on the Miniflux instance.
 func Update( //nolint:cyclop
+	ctx context.Context,
 	client *miniflux.Client,
 	actions []diff.Action,
 	feeds []*miniflux.Feed,
 	categories []*miniflux.Category,
 ) error {
-	log.Println("performing actions")
+	log.Info(ctx, "performing actions")
 
 	for _, action := range actions {
 		switch action.Type {
 		case diff.CreateCategory:
-			log.Printf(`creating category: "%s"`, action.CategoryTitle)
+			log.Info(ctx, "creating category", log.Metadata{
+				"title": action.CategoryTitle,
+			})
+
 			if _, err := client.CreateCategory(action.CategoryTitle); err != nil {
 				return errors.Wrap(err, "creating category")
 			}
 
 		case diff.CreateFeed:
-			log.Printf(`creating feed: "%s / %s"`, action.CategoryTitle, action.FeedURL)
+			log.Info(ctx, "creating feed", log.Metadata{
+				"category": action.CategoryTitle,
+				"url":      action.FeedURL,
+			})
+
 			categoryID, err := findCategoryIDByTitle(action.CategoryTitle, categories)
 			if err != nil {
 				return errors.Wrap(err, "finding category id")
@@ -42,7 +51,10 @@ func Update( //nolint:cyclop
 			}
 
 		case diff.DeleteCategory:
-			log.Printf(`deleting category: "%s"`, action.CategoryTitle)
+			log.Info(ctx, "deleting category", log.Metadata{
+				"title": action.CategoryTitle,
+			})
+
 			categoryID, err := findCategoryIDByTitle(action.CategoryTitle, categories)
 			if err != nil {
 				return errors.Wrap(err, "finding category id")
@@ -53,7 +65,11 @@ func Update( //nolint:cyclop
 			}
 
 		case diff.DeleteFeed:
-			log.Printf(`deleting feed: "%s / %s"`, action.CategoryTitle, action.FeedURL)
+			log.Info(ctx, "deleting feed", log.Metadata{
+				"category": action.CategoryTitle,
+				"url":      action.FeedURL,
+			})
+
 			feedID, err := findFeedIDByURL(action.FeedURL, feeds)
 			if err != nil {
 				return errors.Wrap(err, "finding feed id")

@@ -1,11 +1,11 @@
 Blog:
   - https://linear-magazine.com/feed
   - https://brandur.org/articles.atom
+  - https://www.youtube.com/feeds/videos.xml?channel_id=UCMb0O2CdPBNi-QqPk5T3gsQ # Adam Ondra
   - https://matt-rickard.com/rss
-HN:
+HNR:
   - https://hnrss.org/frontpage?points=200
 YouTube:
-  - https://www.youtube.com/feeds/videos.xml?channel_id=UCMb0O2CdPBNi-QqPk5T3gsQ # Adam Ondra
   - https://www.youtube.com/feeds/videos.xml?channel_id=UCpnuadQ_w3r6f4Q_NRlqd-w # Kraig Adams
   - https://www.youtube.com/feeds/videos.xml?channel_id=UCstLIadsuuLmDdIzMZxesfg # Wild Homestead
   - https://www.youtube.com/feeds/videos.xml?channel_id=UCm325cMiw9B15xl22_gr6Dw # Beau Miles
