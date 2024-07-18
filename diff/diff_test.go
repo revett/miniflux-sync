@@ -68,6 +68,10 @@ func TestCalculateDiff(t *testing.T) { //nolint:funlen
 					CategoryTitle: "General",
 				},
 				{
+					Type:          diff.DeleteCategory,
+					CategoryTitle: "General",
+				},
+				{
 					Type:          diff.CreateCategory,
 					CategoryTitle: "Tech",
 				},
@@ -90,6 +94,10 @@ func TestCalculateDiff(t *testing.T) { //nolint:funlen
 				{
 					Type:          diff.DeleteFeed,
 					FeedURL:       "https://tech.com/feed",
+					CategoryTitle: "Tech",
+				},
+				{
+					Type:          diff.DeleteCategory,
 					CategoryTitle: "Tech",
 				},
 			},
@@ -118,6 +126,33 @@ func TestCalculateDiff(t *testing.T) { //nolint:funlen
 					Type:          diff.CreateFeed,
 					FeedURL:       "https://music.com/feed",
 					CategoryTitle: "Music",
+				},
+			},
+		},
+
+		"DeleteCategoryAndFeed": {
+			local: map[string][]string{
+				"Music": {
+					"https://music.com/feed",
+				},
+			},
+			remote: map[string][]string{
+				"Music": {
+					"https://music.com/feed",
+				},
+				"Tech": {
+					"https://tech.com/feed",
+				},
+			},
+			expected: []diff.Action{
+				{
+					Type:          diff.DeleteFeed,
+					FeedURL:       "https://tech.com/feed",
+					CategoryTitle: "Tech",
+				},
+				{
+					Type:          diff.DeleteCategory,
+					CategoryTitle: "Tech",
 				},
 			},
 		},
