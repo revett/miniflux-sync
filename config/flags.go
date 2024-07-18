@@ -6,9 +6,10 @@ import (
 
 // Config holds the configuration for the CLI.
 type Config struct {
-	Endpoint string
-	APIKey   string
-	Version  string
+	APIKey         string
+	Endpoint       string
+	ExportFilename string
+	Version        string
 }
 
 // New is a convenience function for creating a new Config.
@@ -36,6 +37,13 @@ func (c *Config) Flags() []cli.Flag {
 			Destination: &c.APIKey,
 			Aliases:     []string{"a"},
 			Required:    true,
+		},
+		&cli.StringFlag{
+			Name:        "export-filename",
+			Usage:       "Filename for exported data.",
+			EnvVars:     []string{"MINIFLUX_SYNC_EXPORT_FILENAME"},
+			Destination: &c.ExportFilename,
+			Aliases:     []string{"ef"},
 		},
 	}
 }

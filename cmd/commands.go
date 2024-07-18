@@ -1,8 +1,6 @@
 package cmd
 
 import (
-	"log"
-
 	"github.com/pkg/errors"
 	"github.com/revett/miniflux-sync/config"
 	"github.com/urfave/cli/v2"
@@ -28,7 +26,10 @@ func Commands(cfg *config.Config) []*cli.Command {
 			Aliases: []string{"d"},
 			Usage:   "Dump the current remote Miniflux state to your machine.",
 			Action: func(ctx *cli.Context) error {
-				log.Println("dump command")
+				if err := dump(cfg); err != nil {
+					return errors.Wrap(err, "running dump command")
+				}
+
 				return nil
 			},
 		},
