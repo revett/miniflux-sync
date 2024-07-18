@@ -23,7 +23,7 @@ func main() {
 		Version: cfg.Version,
 		Flags:   cfg.Flags(),
 		Action: func(ctx *cli.Context) error {
-			if err := sync.Sync(); err != nil {
+			if err := sync.Sync(cfg); err != nil {
 				return errors.Wrap(err, "syncing config")
 			}
 
