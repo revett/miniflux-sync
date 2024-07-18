@@ -9,8 +9,8 @@ echo "version: $VERSION"
 
 # Check if the tag already exists in the remote repository using gh CLI.
 echo "checking if tag $VERSION already exists in the remote repo"
-if gh release view "$VERSION" >/dev/null 2>&1; then
-  echo "Tag $VERSION already exists."
+if gh api repos/revett/miniflux-sync/git/refs/tags/$VERSION >/dev/null 2>&1; then
+  echo "tag $VERSION already exists, exiting"
   exit 1
 fi
 
