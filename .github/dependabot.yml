@@ -1,0 +1,13 @@
+version: 2
+updates:
+  - package-ecosystem: "gomod"
+    directory: "/"
+    target-branch: "main"
+    schedule:
+      interval: daily
+      timezone: Europe/London
+    assignees:
+      - "revett"
+    ignore:
+      - dependency-name: "*"
+        update-types: ["version-update:semver-patch"]

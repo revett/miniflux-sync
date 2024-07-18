@@ -15,7 +15,6 @@ import (
 // TODO: Improve test coverage.
 // TODO: Add CI.
 // TODO: Add README.
-// TODO: Add Dependabot.
 // TODO: Define release process.
 
 //go:embed VERSION
