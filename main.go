@@ -13,7 +13,6 @@ import (
 )
 
 // TODO: Improve test coverage.
-// TODO: Define release process.
 
 //go:embed VERSION
 var version string

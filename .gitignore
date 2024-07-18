@@ -21,6 +21,9 @@
 go.work
 go.work.sum
 
+# goreleaser
+dist/
+
 # Added manually
 *_opml.xml
 miniflux-sync-remote-*.yml

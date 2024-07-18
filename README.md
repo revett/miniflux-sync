@@ -45,4 +45,7 @@ Contributions, issues and feature requests are very welcome.
 ```bash
 # Running tests
 go test -cover ./...
+
+# Bump VERSION, and run script
+GITHUB_TOKEN="..." ./scripts/release.sh
 ```
