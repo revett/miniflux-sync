@@ -2,6 +2,30 @@
 
 Manage and sync your [Miniflux](https://github.com/miniflux/v2) feeds with YAML.
 
+![YAML config](./.resources/config.png)
+![Logs](./.resources/logs.png)
+
+## Install
+
+> [!IMPORTANT]
+> This project is yet to make a release.
+
+## Usage
+
+```bash
+# Help
+miniflux-sync -h
+
+# View changes via dry run
+miniflux-sync sync --path ./feeds.yml --dry-run
+
+# Sync changes
+miniflux-sync sync --path ./feeds.yml
+
+# Export remote state
+miniflux-sync dump
+```
+
 ## Contributing
 
 Contributions, issues and feature requests are very welcome.
