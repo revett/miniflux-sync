@@ -1,8 +1,10 @@
 package diff
 
+import "sort"
+
 // CalculateDiff calculates the differences between the local and remote state and returns the
 // actions to be performed.
-func CalculateDiff(local *State, remote *State) ([]Action, error) {
+func CalculateDiff(local *State, remote *State) ([]Action, error) { //nolint:cyclop
 	// TODO: Is this the correct order to ensure that we don't get strange data integrity issues?
 	actions := []Action{}
 
@@ -52,7 +54,7 @@ func CalculateDiff(local *State, remote *State) ([]Action, error) {
 		}
 	}
 
-	// TODO: Implement diff logic.
+	sort.Sort(ActionSorter(actions))
 
 	return actions, nil
 }

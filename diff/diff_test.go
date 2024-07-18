@@ -156,6 +156,89 @@ func TestCalculateDiff(t *testing.T) { //nolint:funlen
 				},
 			},
 		},
+
+		"CreateMultipleCategoriesAndFeeds": {
+			local: map[string][]string{
+				"Tech": {
+					"https://tech.com/feed",
+					"https://newtech.com/feed",
+				},
+				"Music": {
+					"https://music.com/feed",
+				},
+				"News": {
+					"https://news.com/feed",
+				},
+			},
+			remote: map[string][]string{},
+			expected: []diff.Action{
+				{
+					Type:          diff.CreateCategory,
+					CategoryTitle: "Music",
+				},
+				{
+					Type:          diff.CreateCategory,
+					CategoryTitle: "News",
+				},
+				{
+					Type:          diff.CreateCategory,
+					CategoryTitle: "Tech",
+				},
+				{
+					Type:          diff.CreateFeed,
+					FeedURL:       "https://music.com/feed",
+					CategoryTitle: "Music",
+				},
+				{
+					Type:          diff.CreateFeed,
+					FeedURL:       "https://news.com/feed",
+					CategoryTitle: "News",
+				},
+				{
+					Type:          diff.CreateFeed,
+					FeedURL:       "https://newtech.com/feed",
+					CategoryTitle: "Tech",
+				},
+				{
+					Type:          diff.CreateFeed,
+					FeedURL:       "https://tech.com/feed",
+					CategoryTitle: "Tech",
+				},
+			},
+		},
+
+		"DeleteMultipleFeedsInDifferentCategories": {
+			local: map[string][]string{
+				"Tech": {
+					"https://tech.com/feed",
+				},
+			},
+			remote: map[string][]string{
+				"Tech": {
+					"https://tech.com/feed",
+					"https://oldtech.com/feed",
+				},
+				"Music": {
+					"https://music.com/feed",
+				},
+			},
+			expected: []diff.Action{
+				{
+					Type:          diff.DeleteFeed,
+					FeedURL:       "https://music.com/feed",
+					CategoryTitle: "Music",
+				},
+				{
+					Type:          diff.DeleteFeed,
+					FeedURL:       "https://oldtech.com/feed",
+					CategoryTitle: "Tech",
+				},
+				{
+					Type:          diff.DeleteCategory,
+					CategoryTitle: "Music",
+				},
+			},
+		},
 	}
 
 	for name, testCase := range tests {

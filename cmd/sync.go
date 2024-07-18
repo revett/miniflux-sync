@@ -16,8 +16,6 @@ func sync(flags *config.SyncFlags, client *miniflux.Client) error {
 	var localState *diff.State
 	var err error
 
-	// TODO: Add dry run support.
-
 	switch filepath.Ext(flags.Path) {
 	case ".yaml", ".yml":
 		localState, err = parse.Parse(flags.Path)
@@ -55,7 +53,11 @@ func sync(flags *config.SyncFlags, client *miniflux.Client) error {
 		log.Printf("%s: %s / %s", action.Type, action.CategoryTitle, action.FeedURL)
 	}
 
-	// TODO: Implement diff logic.
+	if flags.DryRun {
+		log.Println("dry run complete")
+		return nil
+	}
+
 	// TODO: Implement update logic.
 
 	return nil
