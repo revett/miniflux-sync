@@ -1,6 +1,12 @@
 package config
 
-import "github.com/urfave/cli/v2"
+import (
+	"errors"
+	"log"
+	"path/filepath"
+
+	"github.com/urfave/cli/v2"
+)
 
 // SyncFlags holds the flags for the sync command.
 type SyncFlags struct {
@@ -17,6 +23,21 @@ func (s *SyncFlags) Flags() []cli.Flag {
 			Destination: &s.Path,
 			Aliases:     []string{"p"},
 			Required:    true,
+			Action: func(ctx *cli.Context, s string) error {
+				allowedExts := []string{".yaml", ".yml", ".opml"}
+				ext := filepath.Ext(s)
+
+				for _, allowedExt := range allowedExts {
+					if ext == allowedExt {
+						return nil
+					}
+				}
+
+				log.Printf(`invalid file extension: "%s"`, ext)
+				log.Printf("allowed extensions: %v", allowedExts)
+
+				return errors.New("invalid file extension")
+			},
 		},
 	}
 }

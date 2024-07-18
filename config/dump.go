@@ -1,6 +1,12 @@
 package config
 
-import "github.com/urfave/cli/v2"
+import (
+	"errors"
+	"log"
+	"path/filepath"
+
+	"github.com/urfave/cli/v2"
+)
 
 // DumpFlags holds the flags for the dump command.
 type DumpFlags struct {
@@ -16,6 +22,17 @@ func (d *DumpFlags) Flags() []cli.Flag {
 			EnvVars:     []string{"MINIFLUX_SYNC_PATH"},
 			Destination: &d.Path,
 			Aliases:     []string{"p"},
+			Action: func(ctx *cli.Context, s string) error {
+				ext := filepath.Ext(s)
+
+				if ext != ".xml" {
+					log.Printf(`invalid file extension: "%s"`, ext)
+					log.Printf(`allowed extension: ".xml"`)
+					return errors.New("invalid file extension")
+				}
+
+				return nil
+			},
 		},
 	}
 }

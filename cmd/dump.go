@@ -18,7 +18,7 @@ func dump(cfg *config.GlobalFlags, flags *config.DumpFlags) error {
 	}
 
 	log.Println("exporting data from miniflux")
-	bytes, err := client.Export()
+	dat, err := client.Export()
 	if err != nil {
 		return errors.Wrap(err, "getting export data")
 	}
@@ -31,7 +31,7 @@ func dump(cfg *config.GlobalFlags, flags *config.DumpFlags) error {
 	}
 
 	log.Println("writing export data to file")
-	if err := os.WriteFile(filename, bytes, 0o600); err != nil { //nolint:mnd
+	if err := os.WriteFile(filename, dat, 0o600); err != nil { //nolint:mnd
 		return errors.Wrap(err, "writing export data to file")
 	}
 
