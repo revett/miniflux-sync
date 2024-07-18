@@ -13,7 +13,6 @@ import (
 )
 
 // TODO: Improve test coverage.
-// TODO: Add CI.
 // TODO: Add README.
 // TODO: Define release process.
 
