@@ -1,11 +1,13 @@
-# miniflux-sync
+<h1 align="center">miniflux-sync</h1>
 
-Manage and sync your [Miniflux](https://github.com/miniflux/v2) feeds with YAML.
+<p align="center">
+  Manage and sync your <a href="https://github.com/miniflux/v2">Miniflux</a> feeds with YAML.
+</p>
 
-## Demo
-
-![YAML config](./.resources/config.png)
-![Logs](./.resources/logs.png)
+<p align="center">
+  <img src="./.resources/config.png" width="80%" />
+  <img src="./.resources/logs.png" width="80%" />
+</p>
 
 ## Install
 
