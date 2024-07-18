@@ -11,29 +11,29 @@ import (
 )
 
 func sync(cfg *config.GlobalFlags, flags *config.SyncFlags) error {
-	log.Println("reading data from file")
-	log.Println(flags.Path)
+	var localConfig *parse.LocalConfig
+	var err error
 
 	// TODO: Add dry run support.
 
 	switch filepath.Ext(flags.Path) {
 	case ".yaml", ".yml":
-		log.Println("importing from yaml file")
-
-		_, err := parse.LoadYAML(flags.Path)
+		localConfig, err = parse.LoadYAML(flags.Path)
 		if err != nil {
 			return errors.Wrap(err, "loading data from yaml file")
 		}
 
-		// TODO: Implement logic for YAML.
-
 	case ".opml":
 		log.Println("importing from opml file")
+		// TODO: Implement logic for OPML.
 		return errors.New("opml file format not implemented")
 
-		// TODO: Implement logic for OPML.
-
+	default:
+		return errors.New("invalid file extension") // Should never happen, as we validate flag before.
 	}
+
+	log.Printf("local feeds: %d\n", len(localConfig.FeedsByCategory))
+	log.Printf("local categories: %d\n", len(localConfig.FeedsByCategory))
 
 	client, err := api.Client(cfg)
 	if err != nil {
@@ -45,8 +45,9 @@ func sync(cfg *config.GlobalFlags, flags *config.SyncFlags) error {
 		return errors.Wrap(err, "getting feeds by category")
 	}
 
-	log.Printf("feeds: %d\n", len(feedsByCategory.Feeds()))
-	log.Printf("categories: %d\n", len(feedsByCategory))
+	// TODO: feedsByCategory and localConfig do the same thing, merge them in a new package.
+	log.Printf("remote feeds: %d\n", len(feedsByCategory.Feeds()))
+	log.Printf("remote categories: %d\n", len(feedsByCategory))
 
 	// TODO: Implement diff logic.
 	// TODO: Implement update logic.

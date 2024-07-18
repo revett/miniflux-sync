@@ -1,40 +1,30 @@
 package parse
 
 import (
-	"fmt"
-	"net/url"
+	"log"
 	"os"
 
 	"github.com/pkg/errors"
 	"gopkg.in/yaml.v2"
 )
 
-// LoadYAML reads a YAML file, validates the structure, and returns a map of categories and feed
-// URLs.
-func LoadYAML(path string) (map[string][]string, error) {
+// LoadYAML reads a YAML file to a LocalConfig.
+func LoadYAML(path string) (*LocalConfig, error) {
+	log.Println("reading data from yaml file")
+	log.Println(path)
+
 	data, err := os.ReadFile(path) //nolint:gosec
 	if err != nil {
 		return nil, errors.Wrap(err, "reading data from file")
 	}
 
-	feeds := make(map[string][]string)
+	localConfig := LocalConfig{
+		FeedsByCategory: make(map[string][]string),
+	}
 
-	if err := yaml.Unmarshal(data, &feeds); err != nil {
+	if err := yaml.Unmarshal(data, &localConfig.FeedsByCategory); err != nil {
 		return nil, errors.Wrap(err, "unmarshalling data")
 	}
 
-	for category, urls := range feeds {
-		if category == "" {
-			return nil, errors.New("empty category name found in yaml file")
-		}
-
-		for _, u := range urls {
-			if _, err := url.ParseRequestURI(u); err != nil {
-				msg := fmt.Sprintf(`invalid URL "%s" in category "%s"`, u, category)
-				return nil, errors.Wrap(err, msg)
-			}
-		}
-	}
-
-	return feeds, nil
+	return &localConfig, nil
 }
