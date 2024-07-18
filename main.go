@@ -32,8 +32,6 @@ func main() {
 	}
 
 	if err := app.Run(os.Args); err != nil {
-		// TODO: Is the stack trace needed?
-		log.Printf("error: %+v", err)
-		os.Exit(1)
+		log.Fatal(err)
 	}
 }
