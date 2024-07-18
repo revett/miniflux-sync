@@ -1,17 +1,22 @@
 package config
 
-import "github.com/urfave/cli/v2"
+import (
+	"github.com/urfave/cli/v2"
+)
 
 // Config holds the configuration for the CLI.
 type Config struct {
 	Endpoint string
 	Username string
 	Password string
+	Version  string
 }
 
 // New is a convenience function for creating a new Config.
-func New() *Config {
-	return &Config{}
+func New(v string) *Config {
+	return &Config{
+		Version: v,
+	}
 }
 
 // Flags returns the flags for the CLI.
