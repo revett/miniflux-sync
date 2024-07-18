@@ -7,16 +7,11 @@ import (
 	"time"
 
 	"github.com/pkg/errors"
-	"github.com/revett/miniflux-sync/api"
 	"github.com/revett/miniflux-sync/config"
+	miniflux "miniflux.app/v2/client"
 )
 
-func dump(cfg *config.GlobalFlags, flags *config.DumpFlags) error {
-	client, err := api.Client(cfg)
-	if err != nil {
-		return errors.Wrap(err, "creating miniflux client")
-	}
-
+func dump(flags *config.DumpFlags, client *miniflux.Client) error {
 	log.Println("exporting data from miniflux")
 	dat, err := client.Export()
 	if err != nil {

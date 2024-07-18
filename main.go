@@ -14,6 +14,7 @@ import (
 // TODO: Add CI.
 // TODO: Add README.
 // TODO: Add Dependabot.
+// TODO: Define release process.
 
 //go:embed VERSION
 var version string
@@ -30,7 +31,7 @@ func main() {
 	}
 
 	if err := app.Run(os.Args); err != nil {
-		log.Printf("error: %+v\n", err)
+		log.Printf("error: %+v", err)
 		os.Exit(1)
 	}
 }
