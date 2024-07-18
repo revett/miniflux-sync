@@ -12,8 +12,6 @@ import (
 	"github.com/urfave/cli/v2"
 )
 
-// TODO: Improve test coverage.
-
 //go:embed VERSION
 var version string
 
