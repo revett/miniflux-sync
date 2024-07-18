@@ -11,7 +11,7 @@ import (
 	"github.com/revett/miniflux-sync/config"
 )
 
-func dump(cfg *config.Config) error {
+func dump(cfg *config.GlobalFlags, flags *config.DumpFlags) error {
 	client, err := api.Client(cfg)
 	if err != nil {
 		return errors.Wrap(err, "creating miniflux client")
@@ -25,9 +25,9 @@ func dump(cfg *config.Config) error {
 
 	// e.g. "miniflux-sync-remote-20240718105851_opml.xml"
 	filename := fmt.Sprintf("./miniflux-sync-remote-%s_opml.xml", time.Now().Format("20060102150405"))
-	if cfg.ExportFilename != "" {
-		log.Printf(`using export filename from config: "%s"`, cfg.ExportFilename)
-		filename = cfg.ExportFilename
+	if flags.Path != "" {
+		log.Printf(`using export path from "--path": "%s"`, flags.Path)
+		filename = flags.Path
 	}
 
 	log.Println("writing export data to file")

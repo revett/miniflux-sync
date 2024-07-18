@@ -7,14 +7,18 @@ import (
 )
 
 // Commands returns the commands for the CLI.
-func Commands(cfg *config.Config) []*cli.Command {
+func Commands(cfg *config.GlobalFlags) []*cli.Command {
+	dumpFlags := &config.DumpFlags{}
+	syncFlags := &config.SyncFlags{}
+
 	return []*cli.Command{
 		{
 			Name:    "sync",
 			Aliases: []string{"s"},
 			Usage:   "Update Miniflux using a local YAML or OPML file.",
+			Flags:   syncFlags.Flags(),
 			Action: func(ctx *cli.Context) error {
-				if err := sync(cfg); err != nil {
+				if err := sync(cfg, syncFlags); err != nil {
 					return errors.Wrap(err, "running sync command")
 				}
 
@@ -25,8 +29,9 @@ func Commands(cfg *config.Config) []*cli.Command {
 			Name:    "dump",
 			Aliases: []string{"d"},
 			Usage:   "Dump the current remote Miniflux state to your machine.",
+			Flags:   dumpFlags.Flags(),
 			Action: func(ctx *cli.Context) error {
-				if err := dump(cfg); err != nil {
+				if err := dump(cfg, dumpFlags); err != nil {
 					return errors.Wrap(err, "running dump command")
 				}
 

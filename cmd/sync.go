@@ -8,7 +8,7 @@ import (
 	"github.com/revett/miniflux-sync/config"
 )
 
-func sync(cfg *config.Config) error {
+func sync(cfg *config.GlobalFlags, _ *config.SyncFlags) error {
 	client, err := api.Client(cfg)
 	if err != nil {
 		return errors.Wrap(err, "creating miniflux client")

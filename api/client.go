@@ -9,7 +9,7 @@ import (
 )
 
 // Client creates a new Miniflux API client, whilst checking the health of the Miniflux instance.
-func Client(cfg *config.Config) (*miniflux.Client, error) {
+func Client(cfg *config.GlobalFlags) (*miniflux.Client, error) {
 	log.Println("connecting to miniflux instance")
 	client := miniflux.New(cfg.Endpoint, cfg.APIKey)
 
