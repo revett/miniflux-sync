@@ -6,8 +6,8 @@ import (
 	"os"
 
 	"github.com/pkg/errors"
+	"github.com/revett/miniflux-sync/cmd"
 	"github.com/revett/miniflux-sync/config"
-	"github.com/revett/miniflux-sync/sync"
 	"github.com/urfave/cli/v2"
 )
 
@@ -23,8 +23,8 @@ func main() {
 		Version: cfg.Version,
 		Flags:   cfg.Flags(),
 		Action: func(ctx *cli.Context) error {
-			if err := sync.Sync(cfg); err != nil {
-				return errors.Wrap(err, "syncing config")
+			if err := cmd.Sync(cfg); err != nil {
+				return errors.Wrap(err, "running sync command")
 			}
 
 			return nil
