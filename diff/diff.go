@@ -6,18 +6,23 @@ func CalculateDiff(local *State, remote *State) ([]Action, error) {
 	// TODO: Is this the correct order to ensure that we don't get strange data integrity issues?
 	actions := []Action{}
 
-	// Create a map for quick lookup of remote feeds.
-	remoteFeeds := make(map[string]string)
+	// Iterate over remote feeds and check if they exist in the local feeds.
 	for categoryTitle, feedURLs := range remote.FeedURLsByCategoryTitle {
 		for _, feedURL := range feedURLs {
-			remoteFeeds[feedURL] = categoryTitle
+			if !local.FeedExists(feedURL, categoryTitle) {
+				actions = append(actions, Action{
+					Type:          DeleteFeed,
+					CategoryTitle: categoryTitle,
+					FeedURL:       feedURL,
+				})
+			}
 		}
 	}
 
 	// Iterate over local feeds and check if they exist in the remote feeds.
 	for categoryTitle, feedURLs := range local.FeedURLsByCategoryTitle {
 		for _, feedURL := range feedURLs {
-			if remoteCategory, exists := remoteFeeds[feedURL]; !exists || remoteCategory != categoryTitle {
+			if !remote.FeedExists(feedURL, categoryTitle) {
 				actions = append(actions, Action{
 					Type:          CreateFeed,
 					CategoryTitle: categoryTitle,

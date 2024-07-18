@@ -22,6 +22,22 @@ func (s State) CategoryTitles() []string {
 	return categoryTitles
 }
 
+// FeedExists checks if a feed URL exists in a specific category.
+func (s State) FeedExists(feedURL string, categoryTitle string) bool {
+	feedURLs, exists := s.FeedURLsByCategoryTitle[categoryTitle]
+	if !exists {
+		return false
+	}
+
+	for _, url := range feedURLs {
+		if url == feedURL {
+			return true
+		}
+	}
+
+	return false
+}
+
 // FeedURLs returns a list of all feed URLs in the state.
 func (s State) FeedURLs() []string {
 	feedURLs := []string{}

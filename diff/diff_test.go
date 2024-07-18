@@ -40,6 +40,9 @@ func TestCalculateDiff(t *testing.T) {
 				"Tech": {
 					"https://tech.com/feed",
 				},
+				"Music": {
+					"https://music.com/feed",
+				},
 			},
 			remote: map[string][]string{
 				"Music": {
@@ -68,7 +71,28 @@ func TestCalculateDiff(t *testing.T) {
 			},
 			expected: []diff.Action{
 				{
+					Type:          diff.DeleteFeed,
+					FeedURL:       "https://tech.com/feed",
+					CategoryTitle: "General",
+				},
+				{
 					Type:          diff.CreateFeed,
+					FeedURL:       "https://tech.com/feed",
+					CategoryTitle: "Tech",
+				},
+			},
+		},
+
+		"DeleteFeed": {
+			local: map[string][]string{},
+			remote: map[string][]string{
+				"Tech": {
+					"https://tech.com/feed",
+				},
+			},
+			expected: []diff.Action{
+				{
+					Type:          diff.DeleteFeed,
 					FeedURL:       "https://tech.com/feed",
 					CategoryTitle: "Tech",
 				},
