@@ -5,14 +5,18 @@ import (
 	"os"
 
 	"github.com/pkg/errors"
+	"github.com/revett/miniflux-sync/config"
 	"github.com/revett/miniflux-sync/sync"
 	"github.com/urfave/cli/v2"
 )
 
 func main() {
+	cfg := config.New()
+
 	app := &cli.App{
 		Name:  "miniflux-sync",
-		Usage: "Manage and sync your Miniflux feeds with YAML. ",
+		Usage: "Manage and sync your Miniflux feeds with YAML.",
+		Flags: cfg.Flags(),
 		Action: func(ctx *cli.Context) error {
 			if err := sync.Sync(); err != nil {
 				return errors.Wrap(err, "syncing config")
