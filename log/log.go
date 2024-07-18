@@ -115,6 +115,10 @@ func mergeMetadata(meta ...Metadata) map[string]interface{} {
 
 	for _, m := range meta {
 		for k, v := range m {
+			if v, ok := v.(string); ok && v == "" {
+				continue
+			}
+
 			merged[k] = v
 		}
 	}
