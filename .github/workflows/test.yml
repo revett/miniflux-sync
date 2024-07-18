@@ -1,0 +1,24 @@
+name: Test
+
+on: [push]
+
+jobs:
+  build:
+    name: Run
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Check out code
+        uses: actions/checkout@v2
+
+      - name: Get Go version from go.mod
+        id: go-version
+        run: echo "version=$(./scripts/extract-go-version.sh)" >> $GITHUB_OUTPUT
+
+      - name: Set up Go
+        uses: actions/setup-go@v2
+        with:
+          go-version: ${{ steps.go-version.outputs.version }}
+
+      - name: Test with coverage
+        run: go test -cover ./...

@@ -10,7 +10,7 @@ import (
 )
 
 // Update performs a series of actions on the Miniflux instance.
-func Update( //nolint:cyclop
+func Update( //nolint:cyclop,funlen
 	ctx context.Context,
 	client *miniflux.Client,
 	actions []diff.Action,
