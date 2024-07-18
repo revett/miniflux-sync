@@ -10,12 +10,21 @@ import (
 
 // SyncFlags holds the flags for the sync command.
 type SyncFlags struct {
-	Path string
+	DryRun bool
+	Path   string
 }
 
 // Flags returns the flags for the sync command.
 func (s *SyncFlags) Flags() []cli.Flag {
 	return []cli.Flag{
+		&cli.BoolFlag{
+			Name:        "dry-run",
+			Usage:       "Perform a dry run without making any changes.",
+			EnvVars:     []string{"MINIFLUX_SYNC_DRY_RUN"},
+			Destination: &s.DryRun,
+			Aliases:     []string{"d"},
+			Value:       false,
+		},
 		&cli.StringFlag{
 			Name:        "path",
 			Usage:       "Path to file for imported data. (required)",

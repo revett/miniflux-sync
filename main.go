@@ -10,6 +10,11 @@ import (
 	"github.com/urfave/cli/v2"
 )
 
+// TODO: Write tests.
+// TODO: Add CI.
+// TODO: Add README.
+// TODO: Add Dependabot.
+
 //go:embed VERSION
 var version string
 

@@ -5,6 +5,7 @@ go 1.22.4
 require (
 	github.com/pkg/errors v0.9.1
 	github.com/urfave/cli/v2 v2.27.2
+	gopkg.in/yaml.v2 v2.4.0
 	miniflux.app/v2 v2.1.2
 )
 
