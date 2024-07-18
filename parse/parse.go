@@ -28,7 +28,25 @@ func Parse(ctx context.Context, path string) (*diff.State, error) {
 		return nil, errors.Wrap(err, "unmarshalling data")
 	}
 
-	// TODO: Add validation for duplicate feed URLs or categories.
+	if err := validateDuplicateFeedURLs(&state); err != nil {
+		return nil, errors.Wrap(err, "validating duplicate feed urls")
+	}
 
 	return &state, nil
+}
+
+func validateDuplicateFeedURLs(state *diff.State) error {
+	feedURLSet := make(map[string]struct{})
+
+	for _, urls := range state.FeedURLsByCategoryTitle {
+		for _, url := range urls {
+			if _, exists := feedURLSet[url]; exists {
+				return errors.Errorf(`duplicate url found across categories: "%s"`, url)
+			}
+
+			feedURLSet[url] = struct{}{}
+		}
+	}
+
+	return nil
 }

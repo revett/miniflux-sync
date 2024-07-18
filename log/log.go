@@ -2,7 +2,6 @@ package log
 
 import (
 	"context"
-	"fmt"
 	"os"
 	"time"
 
@@ -65,7 +64,6 @@ func Error(ctx context.Context, err error, meta ...Metadata) {
 	}
 
 	logEvent.Msg(err.Error())
-	fmt.Printf("%+v\n", err) //nolint:forbidigo
 }
 
 // Fatal logs a message at the fatal level, which ends by calling os.Exit(1).
@@ -81,8 +79,6 @@ func Fatal(ctx context.Context, err error, meta ...Metadata) {
 		logEvent = logEvent.Fields(mergeMetadata(meta...))
 	}
 
-	// This has to happen before the call to .Msg(), as that will call os.Exit(1).
-	fmt.Printf("%+v\n", err) //nolint:forbidigo
 	logEvent.Msg(err.Error())
 }
 
