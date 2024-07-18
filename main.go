@@ -16,6 +16,7 @@ import (
 // TODO: Define release process.
 // TODO: Check that input files exist.
 // TODO: Export remote as YAML.
+// TODO: Bug - referencing category that was just created when creating a feed.
 
 //go:embed VERSION
 var version string
@@ -41,3 +42,19 @@ func main() {
 		log.Fatal(ctx, err)
 	}
 }
+
+
+INF connecting to miniflux instance
+INF checking health of miniflux instance
+INF reading data from yaml file
+INF ./examples/feeds.yml
+INF local feeds count=7
+INF local categories count=3
+INF fetching feeds
+INF fetching categories
+INF remote feeds count=6
+INF remote categories count=3
+INF actions to perform count=1
+INF createfeed category_title=Blog feed_url=https://matt-rickard.com/rss
+INF performing actions
+INF creating feed category=Blog url=https://matt-rickard.com/rss
