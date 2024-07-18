@@ -10,11 +10,12 @@ import (
 	"github.com/urfave/cli/v2"
 )
 
-// TODO: Write tests.
+// TODO: Improve test coverage.
 // TODO: Add CI.
 // TODO: Add README.
 // TODO: Add Dependabot.
 // TODO: Define release process.
+// TODO: Add logger.
 
 //go:embed VERSION
 var version string
@@ -31,6 +32,7 @@ func main() {
 	}
 
 	if err := app.Run(os.Args); err != nil {
+		// TODO: Is the stack trace needed?
 		log.Printf("error: %+v", err)
 		os.Exit(1)
 	}

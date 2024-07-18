@@ -1,10 +1,7 @@
 package config
 
 import (
-	"errors"
-	"log"
-	"path/filepath"
-
+	"github.com/revett/miniflux-sync/kitchensink"
 	"github.com/urfave/cli/v2"
 )
 
@@ -33,19 +30,7 @@ func (s *SyncFlags) Flags() []cli.Flag {
 			Aliases:     []string{"p"},
 			Required:    true,
 			Action: func(ctx *cli.Context, s string) error {
-				allowedExts := []string{".yaml", ".yml"}
-				ext := filepath.Ext(s)
-
-				for _, allowedExt := range allowedExts {
-					if ext == allowedExt {
-						return nil
-					}
-				}
-
-				log.Printf(`invalid file extension: "%s"`, ext)
-				log.Printf("allowed extensions: %v", allowedExts)
-
-				return errors.New("invalid file extension")
+				return kitchensink.ValidateFileExtension(s, []string{".yaml", ".yml"})
 			},
 		},
 	}

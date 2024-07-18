@@ -1,10 +1,7 @@
 package config
 
 import (
-	"errors"
-	"log"
-	"path/filepath"
-
+	"github.com/revett/miniflux-sync/kitchensink"
 	"github.com/urfave/cli/v2"
 )
 
@@ -23,15 +20,7 @@ func (d *DumpFlags) Flags() []cli.Flag {
 			Destination: &d.Path,
 			Aliases:     []string{"p"},
 			Action: func(ctx *cli.Context, s string) error {
-				ext := filepath.Ext(s)
-
-				if ext != ".xml" {
-					log.Printf(`invalid file extension: "%s"`, ext)
-					log.Printf(`allowed extension: ".xml"`)
-					return errors.New("invalid file extension")
-				}
-
-				return nil
+				return kitchensink.ValidateFileExtension(s, []string{".xml"})
 			},
 		},
 	}
