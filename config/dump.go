@@ -22,7 +22,7 @@ func (d *DumpFlags) Flags(ctx context.Context) []cli.Flag {
 			Destination: &d.Path,
 			Aliases:     []string{"p"},
 			Action: func(_ *cli.Context, s string) error {
-				return kitchensink.ValidateFileExtension(ctx, s, []string{".xml"})
+				return kitchensink.ValidateFileExtension(ctx, s, []string{".yaml", ".yml"})
 			},
 		},
 	}
