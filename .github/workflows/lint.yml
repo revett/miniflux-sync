@@ -1,0 +1,29 @@
+name: Lint
+
+on: [push]
+
+jobs:
+  lint:
+    name: Run
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Check out code
+        uses: actions/checkout@v2
+
+      - name: Get Go version from go.mod
+        id: go-version
+        run: echo "version=$(./scripts/extract-go-version.sh)" >> $GITHUB_OUTPUT
+
+      - name: Set up Go
+        uses: actions/setup-go@v2
+        with:
+          go-version: ${{ steps.go-version.outputs.version }}
+
+      - name: Download remote configuration
+        run: curl -sSL https://github.com/revett/dotfiles/raw/main/.golangci.yml -o .golangci.yml
+
+      - name: Run golangci-lint
+        uses: golangci/golangci-lint-action@v2
+        with:
+          config: .golangci.yml
