@@ -26,9 +26,12 @@ func Update( //nolint:cyclop,funlen
 				"title": action.CategoryTitle,
 			})
 
-			if _, err := client.CreateCategory(action.CategoryTitle); err != nil {
+			category, err := client.CreateCategory(action.CategoryTitle)
+			if err != nil {
 				return errors.Wrap(err, "creating category")
 			}
+
+			categories = append(categories, category)
 
 		case diff.CreateFeed:
 			log.Info(ctx, "creating feed", log.Metadata{
@@ -46,9 +49,17 @@ func Update( //nolint:cyclop,funlen
 				CategoryID: categoryID,
 			}
 
-			if _, err := client.CreateFeed(&req); err != nil {
+			feedID, err := client.CreateFeed(&req)
+			if err != nil {
 				return errors.Wrap(err, "creating feed")
 			}
+
+			feed, err := client.Feed(feedID)
+			if err != nil {
+				return errors.Wrap(err, "fetching feed")
+			}
+
+			feeds = append(feeds, feed)
 
 		case diff.DeleteCategory:
 			log.Info(ctx, "deleting category", log.Metadata{
@@ -64,6 +75,8 @@ func Update( //nolint:cyclop,funlen
 				return errors.Wrap(err, "deleting category")
 			}
 
+			categories = removeCategoryByID(categoryID, categories)
+
 		case diff.DeleteFeed:
 			log.Info(ctx, "deleting feed", log.Metadata{
 				"category": action.CategoryTitle,
@@ -78,6 +91,8 @@ func Update( //nolint:cyclop,funlen
 			if err := client.DeleteFeed(feedID); err != nil {
 				return errors.Wrap(err, "deleting feed")
 			}
+
+			feeds = removeFeedByID(feedID, feeds)
 
 		default:
 			return errors.Errorf(`unknown action type: "%s"`, action.Type)
@@ -105,4 +120,24 @@ func findFeedIDByURL(url string, feeds []*miniflux.Feed) (int64, error) {
 	}
 
 	return 0, errors.Errorf(`feed not found: "%s"`, url)
+}
+
+func removeCategoryByID(id int64, categories []*miniflux.Category) []*miniflux.Category {
+	for i, category := range categories {
+		if category.ID == id {
+			return append(categories[:i], categories[i+1:]...)
+		}
+	}
+
+	return categories
+}
+
+func removeFeedByID(id int64, feeds []*miniflux.Feed) []*miniflux.Feed {
+	for i, feed := range feeds {
+		if feed.ID == id {
+			return append(feeds[:i], feeds[i+1:]...)
+		}
+	}
+
+	return feeds
 }

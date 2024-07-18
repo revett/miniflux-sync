@@ -16,7 +16,6 @@ import (
 // TODO: Define release process.
 // TODO: Check that input files exist.
 // TODO: Export remote as YAML.
-// TODO: Bug - referencing category that was just created when creating a feed.
 
 //go:embed VERSION
 var version string
