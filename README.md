@@ -1,6 +1,6 @@
 # miniflux-sync
 
-Manage and sync your Miniflux feeds with YAML.
+Manage and sync your [Miniflux](https://github.com/miniflux/v2) feeds with YAML.
 
 ## Contributing
 
