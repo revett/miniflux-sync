@@ -2,8 +2,6 @@
 
 Manage and sync your [Miniflux](https://github.com/miniflux/v2) feeds with YAML.
 
-## Demo
-
 ![YAML config](./.resources/config.png)
 ![Logs](./.resources/logs.png)
 
