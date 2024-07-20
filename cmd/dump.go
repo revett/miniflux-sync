@@ -17,12 +17,12 @@ import (
 func dump(ctx context.Context, flags *config.DumpFlags, client *miniflux.Client) error {
 	log.Info(ctx, "exporting data from miniflux")
 
-	feeds, _, err := api.FetchData(ctx, client)
+	feeds, categories, err := api.FetchData(ctx, client)
 	if err != nil {
 		return errors.Wrap(err, "fetching data")
 	}
 
-	remoteState, err := api.GenerateDiffState(feeds)
+	remoteState, err := api.GenerateDiffState(feeds, categories)
 	if err != nil {
 		return errors.Wrap(err, "generating remote state")
 	}
