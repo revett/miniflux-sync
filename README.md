@@ -15,7 +15,46 @@ Manage and sync your [Miniflux](https://github.com/miniflux/v2) feeds with YAML.
 - Download the [latest release](https://github.com/revett/miniflux-sync/releases)
 - For macOS, follow these [steps](https://support.apple.com/en-il/guide/mac-help/mchleab3a043/mac)
 
-## Usage
+## GitHub Action
+
+```yaml
+name: Sync feeds via revett/miniflux-sync
+
+on: [push]
+
+jobs:
+  Run:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v2
+
+      - name: Download and read version
+        id: get_version
+        run: |
+          VERSION=$(curl -s https://raw.githubusercontent.com/revett/miniflux-sync/main/VERSION)
+          echo "VERSION=$VERSION" >> $GITHUB_ENV
+
+      - name: Download and extract latest release
+        run: |
+          curl -L https://github.com/revett/miniflux-sync/releases/download/${{ env.VERSION }}/miniflux-sync_Linux_x86_64.tar.gz | tar -xz
+
+      - name: Run CLI with arguments
+        env:
+          MINIFLUX_SYNC_ENDPOINT: ${{ secrets.MINIFLUX_SYNC_ENDPOINT }}
+          MINIFLUX_SYNC_API_KEY: ${{ secrets.MINIFLUX_SYNC_API_KEY }}
+        run: |
+          if [ "${{ github.ref_name }}" == "main" ]; then
+            ./miniflux-sync sync --path feeds.yml
+          else
+            ./miniflux-sync sync --dry-run --path feeds.yml
+          fi
+```
+
+> See [revett/feeds](https://github.com/revett/feeds) for an example repo.
+
+## CLI
 
 Configure the CLI to use and authenticate with your Miniflux instance:
 
