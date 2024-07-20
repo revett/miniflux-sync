@@ -7,9 +7,16 @@ import (
 )
 
 // GenerateDiffState generates a diff.State struct from a list of feeds.
-func GenerateDiffState(feeds []*miniflux.Feed) (*diff.State, error) {
+func GenerateDiffState(
+	feeds []*miniflux.Feed, categories []*miniflux.Category,
+) (*diff.State, error) {
 	state := diff.State{
 		FeedURLsByCategoryTitle: map[string][]string{},
+	}
+
+	// Initialise empty slices for each category.
+	for _, category := range categories {
+		state.FeedURLsByCategoryTitle[category.Title] = []string{}
 	}
 
 	// Populate state with values, and create category set.
