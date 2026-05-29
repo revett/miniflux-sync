@@ -1,9 +1,7 @@
-# miniflux-sync
+> [!IMPORTANT]  
+> I no longer use Miniflux so have archived this repo, it is no longer in development (May 2026).
 
-![GitHub Release](https://img.shields.io/github/v/release/revett/miniflux-sync?label=Release)
-![GitHub branch check runs](https://img.shields.io/github/check-runs/revett/miniflux-sync/main?label=Checks)
-![GitHub go.mod Go version](https://img.shields.io/github/go-mod/go-version/revett/miniflux-sync)
-![GitHub License](https://img.shields.io/github/license/revett/miniflux-sync?label=License)
+# miniflux-sync
 
 Manage and sync your [Miniflux](https://github.com/miniflux/v2) feeds with YAML.
 
